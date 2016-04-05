@@ -6,14 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lab2.Helpers.OrderedDithering;
 import lab2.ImageChooserGUI.ImageChooserGUI;
 import lab2.Main;
 
@@ -22,6 +20,7 @@ import java.io.IOException;
 
 import static javafx.embed.swing.SwingFXUtils.fromFXImage;
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
+import static lab2.Helpers.Helper.copyBufferedImage;
 
 public class Controller {
     public static Image image;
@@ -29,6 +28,12 @@ public class Controller {
 
     @FXML
     public ImageView mainImageView;
+    @FXML
+    public TextField matrixSize;
+    @FXML
+    public TextField levelsOfGray;
+    @FXML
+    public TextField sizeColPalette;
 
     @FXML
     public void initialize() {
@@ -64,12 +69,31 @@ public class Controller {
         mainImageView.setImage(null);
     }
 
-    public void showCustomFilterDialog(ActionEvent actionEvent) throws IOException {
+    public void transformOrdDithering(ActionEvent actionEvent) {
+        int mSize = 2;
+        int lvlGray = 4;
+        try {
+            mSize = Integer.parseInt(matrixSize.getText());
+            lvlGray = Integer.parseInt(levelsOfGray.getText());
+        } catch (NumberFormatException ex) {
+            Alert alr = new Alert(Alert.AlertType.ERROR, "Wrong value!", ButtonType.OK);
+            alr.show();
+            return;
+        }
+
+        if (image == null) {
+            Alert alr = new Alert(Alert.AlertType.ERROR, "There is no image to process!", ButtonType.OK);
+            alr.show();
+        } else {
+            BufferedImage workCpy = copyBufferedImage(workingImage);
+            int[][] ditherMatrix = OrderedDithering.prepareMatrix(mSize);
+            workingImage = OrderedDithering.orderedDithering(ditherMatrix, workCpy, OrderedDithering.genGrayLevels(lvlGray));
+            image = toFXImage(workingImage, null);
+            mainImageView.setImage(image);
+        }
+
     }
 
-    public void transformUsingConvFilter(ActionEvent actionEvent) {
-    }
-
-    public void transformUsingFuncFilter(ActionEvent actionEvent) {
+    public void transformColorQuant(ActionEvent actionEvent) {
     }
 }
