@@ -218,7 +218,7 @@ public class MedianCutQuantization {
 
     public static double distanceToRGB(int col1, int col2) {
         StatColorRep c1 = new StatColorRep(col1);
-        StatColorRep c2 = new StatColorRep(col1);
+        StatColorRep c2 = new StatColorRep(col2);
 
         double redDiff = abs(c1.rgb[RED] - c2.rgb[RED]);
         double greenDiff = abs(c1.rgb[GREEN] - c2.rgb[GREEN]);

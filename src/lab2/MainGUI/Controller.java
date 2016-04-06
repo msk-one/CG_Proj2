@@ -14,11 +14,13 @@ import javafx.stage.Stage;
 import lab2.Helpers.Helper;
 import lab2.Helpers.MedianCutQuantization;
 import lab2.Helpers.OrderedDithering;
+import lab2.Helpers.PopularityAlgQuantization;
 import lab2.ImageChooserGUI.ImageChooserGUI;
 import lab2.Main;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static javafx.embed.swing.SwingFXUtils.fromFXImage;
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
@@ -110,7 +112,7 @@ public class Controller {
             alr.show();
         } else {
             BufferedImage workCpy = Helper.copyBufferedImage(workingImage);
-            workingImage = MedianCutQuantization.medianCut(workCpy, sizeCol);
+            workingImage = PopularityAlgQuantization.performQuantization(workCpy, PopularityAlgQuantization.prepareColorArray(workCpy, sizeCol));
             image = toFXImage(workingImage, null);
             mainImageView.setImage(image);
         }
