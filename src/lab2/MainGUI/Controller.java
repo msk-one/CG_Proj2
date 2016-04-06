@@ -11,6 +11,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lab2.Helpers.Helper;
+import lab2.Helpers.MedianCutQuantization;
 import lab2.Helpers.OrderedDithering;
 import lab2.ImageChooserGUI.ImageChooserGUI;
 import lab2.Main;
@@ -20,7 +22,6 @@ import java.io.IOException;
 
 import static javafx.embed.swing.SwingFXUtils.fromFXImage;
 import static javafx.embed.swing.SwingFXUtils.toFXImage;
-import static lab2.Helpers.Helper.copyBufferedImage;
 
 public class Controller {
     public static Image image;
@@ -85,9 +86,9 @@ public class Controller {
             Alert alr = new Alert(Alert.AlertType.ERROR, "There is no image to process!", ButtonType.OK);
             alr.show();
         } else {
-            BufferedImage workCpy = copyBufferedImage(workingImage);
+            BufferedImage workCpy = Helper.copyBufferedImage(workingImage);
             int[][] ditherMatrix = OrderedDithering.prepareMatrix(mSize);
-            workingImage = OrderedDithering.orderedDithering(ditherMatrix, workCpy, OrderedDithering.genGrayLevels(lvlGray));
+            workingImage = OrderedDithering.orderedDithering(ditherMatrix, workCpy, Helper.genGrayLevels(lvlGray));
             image = toFXImage(workingImage, null);
             mainImageView.setImage(image);
         }
@@ -95,5 +96,23 @@ public class Controller {
     }
 
     public void transformColorQuant(ActionEvent actionEvent) {
+        int sizeCol = 8;
+        try {
+            sizeCol = Integer.parseInt(sizeColPalette.getText());
+        } catch (NumberFormatException ex) {
+            Alert alr = new Alert(Alert.AlertType.ERROR, "Wrong value!", ButtonType.OK);
+            alr.show();
+            return;
+        }
+
+        if (image == null) {
+            Alert alr = new Alert(Alert.AlertType.ERROR, "There is no image to process!", ButtonType.OK);
+            alr.show();
+        } else {
+            BufferedImage workCpy = Helper.copyBufferedImage(workingImage);
+            workingImage = MedianCutQuantization.medianCut(workCpy, sizeCol);
+            image = toFXImage(workingImage, null);
+            mainImageView.setImage(image);
+        }
     }
 }

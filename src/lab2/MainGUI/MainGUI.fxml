@@ -84,7 +84,7 @@
                                         <Insets bottom="15.0" left="10.0" right="10.0" />
                                     </VBox.margin>
                                 </Label>
-                        <TextField fx:id="sizeColPalette" promptText="Size of col. palette">
+                        <TextField fx:id="sizeColPalette" promptText="Size of colorCode. palette">
                            <VBox.margin>
                               <Insets left="40.0" right="40.0" />
                            </VBox.margin>

@@ -119,21 +119,4 @@ public class OrderedDithering {
         return prepareMatrixRecursively(opCount, mSize*2, processedArr);
     }
 
-    public static Color[] genGrayLevels(int levels) {
-        Color[] grayLevels;
-        if(levels > 1) {
-            grayLevels = new Color[levels];
-            for (int i = 0; i < levels; i++)
-            {
-                grayLevels[i] = new Color((int)255.0/(levels - 1)*i, (int)255.0/(levels - 1)*i, (int)255.0/(levels - 1)*i);
-            }
-        }
-        else {
-            grayLevels = new Color[1];
-            grayLevels[0] = (Color.WHITE);
-        }
-
-        return grayLevels;
-    }
-
 }
